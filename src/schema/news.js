@@ -18,7 +18,9 @@ const typeDef = gql`
     }
     
     input NewsInput {
-        state: String
+        state: String,
+        limit: Int,
+        offset: Int
     }
 `;
 

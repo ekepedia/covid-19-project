@@ -6,6 +6,7 @@ import ApolloClient from 'apollo-boost';
 import {ApolloProvider} from '@apollo/react-hooks';
 
 import Routing from "./components/infrastructure/Routing";
+import "./style.css";
 
 const client = new ApolloClient({
     uri: window.location.origin + "/graphql",

@@ -1,6 +1,7 @@
 import React from "react";
 
 import injectSheet from 'react-jss';
+import moment from "moment";
 import { withRouter } from 'react-router-dom';
 import {Query, withApollo} from 'react-apollo';
 import {gql} from "apollo-boost";
@@ -9,24 +10,29 @@ const Styles = {
     container: {
         background: "#F3EFEC",
         minHeight: "100%",
-        padding: "20px 23px",
+        // padding: "20px 23px",
     },
     boxContainer: {
         fontFamily: "'Barlow', sans-serif",
         fontWeight: 800,
-        background: "black",
         height: "234px",
         color: "white",
         padding: "27px 31px",
         paddingRight: "0px",
-        textTransform: "uppercase"
+        textTransform: "uppercase",
+        backgroundPosition: "center",
+        backgroundSize: "100% 100%",
+        backgroundRepeat: "no-repeat",
+        backgroundImage: "url('img/corner-background-2.png')",
+        marginBottom: "15px"
     },
     header: {
         fontSize: "33px",
         lineHeight: "40px",
+        letterSpacing: "1px"
     },
     span: {
-        color: "#35998F"
+        color: "#F4AE3D"
     },
     button: {
         marginTop: "35px",
@@ -36,26 +42,37 @@ const Styles = {
         height: "56p6x",
         textAlign: "center",
         background: "#35998F",
+        backgroundImage: "url('/img/gradient.png')",
+        backgroundPosition: "left",
+        animation: "backgroundmove 5s infinite",
+        animationTimingFunction: "ease-in-out",
         borderRadius: "28px",
         fontSize: "23px",
         padding: "0 37px"
     },
+    card: {
+        borderBottom: "1px solid #D8D5D2",
+        margin: "auto 16px",
+        fontFamily: "'Roboto', san-serif",
+        fontSize: "14px",
+        padding: "11 18px",
+        paddingBottom: "19px",
+    },
     title: {
-        background: "#D8D8D8",
-        width: "fit-content",
-        padding: "0 9px",
-        height: "22px",
-        lineHeight: "22px",
-        borderRadius: "11px",
         color: "black",
-        marginBottom: "18px",
         fontFamily: "'Roboto Mono', monospace",
-        textDecoration: "underline",
-        marginTop: "22px"
+        fontWeight: "800",
+        lineHeight: "30px"
     },
     descr: {
-        paddingLeft: "9px",
-        fontFamily: "'Roboto Mono', monospace",
+        lineHeight: "18px",
+        marginTop: "-4px"
+    },
+    time: {
+        fontSize: "12px",
+        color: "#6D7278",
+        lineHeight: "18px",
+        marginTop: "9px"
     }
 };
 
@@ -63,6 +80,60 @@ class StateNews extends React.Component {
 
     constructor(props) {
         super(props);
+
+        this.state = {};
+
+        this.setFetchmore = this.setFetchmore.bind(this);
+        this.handleScroll = this.handleScroll.bind(this);
+    }
+
+    componentDidMount() {
+        window.addEventListener('scroll', this.handleScroll);
+    }
+
+    componentWillUnmount() {
+        window.removeEventListener('scroll', this.handleScroll);
+    }
+
+    handleScroll(event) {
+        let scrollTop = event.srcElement.body.scrollTop;
+        let height = document.getElementById("news-holder").clientHeight;
+
+        if (height - scrollTop < 600 ) {
+            this.loadMore()
+        }
+    }
+
+    setFetchmore(fn, offset) {
+        this.fetchMore = fn;
+        this.offset = offset;
+    }
+
+    loadMore() {
+        const { state } = this.props.match.params;
+
+        if (!this.loading && !this.no_more) {
+            this.loading = true;
+            console.log("LOADING", this.offset);
+            this.setState({loading: true});
+            this.fetchMore({
+                variables: {
+                    state, limit: 10, offset: this.offset
+                },
+                updateQuery: (prev, { fetchMoreResult }) => {
+                    this.loading = false;
+                    this.setState({loading: false});
+
+                    console.log(prev, fetchMoreResult);
+                    if (fetchMoreResult && fetchMoreResult.news && !fetchMoreResult.news.length) {
+                        this.no_more = true;
+                    }
+                    return Object.assign({}, prev, {
+                        news: [...prev.news, ...fetchMoreResult.news]
+                    });
+                }
+            })
+        }
     }
 
     render() {
@@ -79,25 +150,46 @@ class StateNews extends React.Component {
                     {state}
                 </div>
             </div>
-            <Query query={NewsQuery} variables={{state}}>
-                {({ loading, error, data, refetch }) => {
+            <Query query={NewsQuery} variables={{state, limit: 10, offset: 0}}>
+                {({ loading, error, data, refetch, fetchMore }) => {
 
-                    if (loading) return (<div className={classes.descr} style={{marginTop: "22px"}}>
-                        Loading News
+                    this.setFetchmore(fetchMore, data && data.news ? data.news.length : 0);
+
+                    if (loading) return (<div className={classes.card} style={{marginTop: "22px"}}>
+                        <div className={classes.title}>
+                            Loading News . . .
+                        </div>
                     </div>);
 
                     if (error) return <p>Error Loading Page</p>;
 
-                    return <div>{data.news.map((news) => {
-                        return (<div key={news.link}>
-                            <div className={classes.title}>
-                                <a style={{color: "black"}} target={"_blank"} href={news.link}>{news.publisher}</a>
+                    return <div>
+                            <div id={"news-holder"}>{data.news && data.news.length ? data.news.map((news) => {
+                                return (<div key={news.link} className={classes.card}>
+                                    <div className={classes.title}>
+                                        <a style={{color: "black"}} target={"_blank"} href={news.link}>{news.publisher}</a>
+                                    </div>
+                                    <div className={classes.descr}>
+                                        {news.title}
+                                    </div>
+                                    <div className={classes.time}>
+                                        {moment(news.date).fromNow()}
+                                    </div>
+                                </div>)
+                            }) : <div className={classes.card} style={{marginTop: "22px"}}>
+                                <div className={classes.title}>
+                                    No News!
+                                </div>
+                            </div>}</div>
+                            <div>
+                                {this.state.loading &&
+                                <div className={classes.card} style={{marginTop: "22px"}}>
+                                    <div className={classes.title}>
+                                        Loading More News . . .
+                                    </div>
+                                </div>}
                             </div>
-                            <div className={classes.descr}>
-                                {news.title}
-                            </div>
-                        </div>)
-                    })}</div>
+                    </div>
                 }}
             </Query>
         </div>);
@@ -106,8 +198,8 @@ class StateNews extends React.Component {
 }
 
 const NewsQuery = gql`
-    query News($state: String){
-        news(input: {state: $state}) {
+    query News($state: String, $offset: Int, $limit: Int){
+        news(input: {state: $state, offset: $offset, limit: $limit}) {
             link
             title
             publisher

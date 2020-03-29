@@ -1,3 +1,7 @@
 html {
     color: black;
 }
+
+@keyframes backgroundmove {
+    50% {background-position: right;}
+}

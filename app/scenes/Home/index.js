@@ -2,30 +2,33 @@ import React from "react";
 
 import injectSheet from 'react-jss';
 import { withRouter, Link } from 'react-router-dom';
-
 const Styles = {
     container: {
         background: "#F3EFEC",
         minHeight: "100%",
-        padding: "20px 23px",
+        //padding: "20px 23px",
         paddingBottom: "100px"
     },
     boxContainer: {
         fontFamily: "'Barlow', sans-serif",
         fontWeight: 800,
-        background: "black",
         height: "234px",
         color: "white",
         padding: "27px 31px",
-        paddingRight: "0px",
-        textTransform: "uppercase"
+        // paddingRight: "0px",
+        textTransform: "uppercase",
+        backgroundPosition: "center",
+        backgroundSize: "100% 100%",
+        backgroundRepeat: "no-repeat",
+        backgroundImage: "url('img/corner-background-2.png')"
     },
     header: {
         fontSize: "33px",
         lineHeight: "40px",
+        letterSpacing: "1px"
     },
     span: {
-        color: "#35998F"
+        //color: "#35998F"
     },
     button: {
         marginTop: "35px",
@@ -34,6 +37,10 @@ const Styles = {
         height: "56p6x",
         textAlign: "center",
         background: "#35998F",
+        backgroundImage: "url('/img/gradient.png')",
+        backgroundPosition: "left",
+        animation: "backgroundmove 5s infinite",
+        animationTimingFunction: "ease-in-out",
         borderRadius: "28px",
         fontSize: "23px"
     },
@@ -42,7 +49,8 @@ const Styles = {
         fontFamily: "'Roboto Mono', monospace",
         textDecoration: "underline",
         marginTop: "33px",
-        fontSize: "33px"
+        fontSize: "33px",
+        marginLeft: "35px"
     },
 };
 

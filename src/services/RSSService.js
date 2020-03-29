@@ -13,7 +13,7 @@ var stemmer = require('natural').PorterStemmer;
 var tokenizer = new natural.WordTokenizer();
 const analyzer = new Analyzer("English", stemmer, "afinn");
 
-function getRSSData({state}) {
+function getRSSData({state, offset, limit}) {
 
     state = state ? state.toLowerCase() : "";
 
@@ -57,6 +57,13 @@ function getRSSData({state}) {
 
         objects = _.without(objects, null);
         objects = objects.sort((a,b) => (b.date - a.date));
+
+        if (offset)  {
+            objects = objects.slice(offset);
+        }
+
+        if (limit)
+            objects = objects.slice(0, limit);
 
         resolve(objects);
     });
