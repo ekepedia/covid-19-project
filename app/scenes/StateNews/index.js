@@ -88,6 +88,7 @@ class StateNews extends React.Component {
 
     componentDidMount() {
         window.addEventListener('scroll', this.handleScroll);
+        window.screenTop = 0;
     }
 
     componentWillUnmount() {

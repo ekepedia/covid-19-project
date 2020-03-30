@@ -379,6 +379,9 @@ class Home extends React.Component {
             option: localStorage.option || "s"
         }
     }
+    componentDidMount() {
+        window.screenTop = 0;
+    }
 
     render() {
 
