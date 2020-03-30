@@ -20,10 +20,11 @@ const Styles = {
         padding: "27px 31px",
         paddingRight: "0px",
         textTransform: "uppercase",
-        backgroundPosition: "center",
-        backgroundSize: "100% 100%",
+        backgroundPosition: "bottom right",
+        backgroundSize: "45px 45px",
         backgroundRepeat: "no-repeat",
-        backgroundImage: "url('img/corner-background-2.png')",
+        backgroundImage: "url('img/corner.png')",
+        backgroundColor: "black",
         marginBottom: "15px"
     },
     header: {
@@ -38,8 +39,6 @@ const Styles = {
         marginTop: "35px",
         minWidth: "169px",
         width: "fit-content",
-        lineHeight: "56px",
-        height: "56p6x",
         textAlign: "center",
         background: "#35998F",
         backgroundImage: "url('/img/gradient.png')",
@@ -48,7 +47,7 @@ const Styles = {
         animationTimingFunction: "ease-in-out",
         borderRadius: "28px",
         fontSize: "23px",
-        padding: "0 37px"
+        padding: "12px 10px",
     },
     card: {
         borderBottom: "1px solid #D8D5D2",
@@ -98,8 +97,8 @@ class StateNews extends React.Component {
     handleScroll(event) {
         let scrollTop = event.srcElement.body.scrollTop;
         let height = document.getElementById("news-holder").clientHeight;
-
-        if (height - scrollTop < 600 ) {
+        let pos = height - window.innerHeight - scrollTop + 249;
+        if (pos < 300 ) {
             this.loadMore()
         }
     }
@@ -178,7 +177,7 @@ class StateNews extends React.Component {
                                 </div>)
                             }) : <div className={classes.card} style={{marginTop: "22px"}}>
                                 <div className={classes.title}>
-                                    No News!
+                                    No Articles Found
                                 </div>
                             </div>}</div>
                             <div>

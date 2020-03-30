@@ -24,13 +24,13 @@ function getRSSData({state, offset, limit}) {
 
             const lowerTitle = item.title.toLowerCase();
 
-            if (lowerTitle.indexOf(state) === -1)
-                return null;
-
             const publisher = item.title.substr(item.title.lastIndexOf('-') + 1).trim();
             const title = item.title.replace(`- ${publisher}`, "").trim();
             const date = new Date(item.pubDate);
             const link = item.link;
+
+            if (title.toLowerCase().indexOf(state) === -1)
+                return null;
 
             const result = sentiment.analyze(item.title);
             const sent_s = result.score;
