@@ -2,7 +2,7 @@ import React from "react";
 
 import injectSheet from 'react-jss';
 import moment from "moment";
-import { withRouter } from 'react-router-dom';
+import { withRouter, Link } from 'react-router-dom';
 import {Query, withApollo} from 'react-apollo';
 import {gql} from "apollo-boost";
 
@@ -15,9 +15,9 @@ const Styles = {
     boxContainer: {
         fontFamily: "'Barlow', sans-serif",
         fontWeight: 800,
-        height: "234px",
+        height: "250px",
         color: "white",
-        padding: "27px 31px",
+        padding: "26px 43px",
         paddingRight: "0px",
         textTransform: "uppercase",
         backgroundPosition: "bottom right",
@@ -26,6 +26,20 @@ const Styles = {
         backgroundImage: "url('img/corner.png')",
         backgroundColor: "black",
         marginBottom: "15px"
+    },
+    backContainer: {
+        fontWeight: 500,
+        fontSize: "12px",
+        textTransform: "initial",
+        marginBottom: "20px",
+        lineHeight: "15px",
+        color: "white",
+        cursor: "pointer"
+    },
+    backButton: {
+        height: "15px",
+        marginTop: "-1px",
+        marginRight: "10px"
     },
     header: {
         fontSize: "33px",
@@ -36,7 +50,7 @@ const Styles = {
         color: "#F4AE3D"
     },
     button: {
-        marginTop: "35px",
+        marginTop: "21px",
         minWidth: "169px",
         width: "fit-content",
         textAlign: "center",
@@ -141,8 +155,15 @@ class StateNews extends React.Component {
         let { classes } = this.props;
         const { state } = this.props.match.params;
 
+        const isState = window.location.pathname.indexOf("/c/") === -1;
+
         return (<div className={classes.container}>
             <div className={classes.boxContainer}>
+                <Link to={"/"}>
+                    <div className={classes.backContainer}>
+                        <img className={classes.backButton} src={"/img/back-button.png"} />
+                        Back to {isState ? "State" : "Country"}</div>
+                </Link>
                 <div className={classes.header}>
                     Tracking <br/><span className={classes.span}>COVID-19</span> News In
                 </div>
@@ -170,7 +191,7 @@ class StateNews extends React.Component {
                                         <a style={{color: "black"}} target={"_blank"} href={news.link}>{news.publisher}</a>
                                     </div>
                                     <div className={classes.descr}>
-                                        {news.title}
+                                        <a style={{color: "black"}} target={"_blank"} href={news.link}>{news.title}</a>
                                     </div>
                                     <div className={classes.time}>
                                         {moment(news.date).fromNow()}

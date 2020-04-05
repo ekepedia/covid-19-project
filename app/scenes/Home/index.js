@@ -63,8 +63,8 @@ const Styles = {
         color: "black",
         fontFamily: "'Roboto Mono', monospace",
         textDecoration: "underline",
-        marginTop: "33px",
-        fontSize: "33px",
+        marginTop: "25px",
+        fontSize: "25px",
         marginLeft: "35px"
     },
 };
@@ -411,7 +411,7 @@ class Home extends React.Component {
             <div>
                 {list.map((state) => {
                     return (<div key={state} className={classes.title}>
-                        <Link to={`/${state}`} style={{color: "black"}}>
+                        <Link to={`/${this.state.option}/${state}`} style={{color: "black"}}>
                             {state}
                         </Link>
                     </div>)

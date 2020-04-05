@@ -15,7 +15,8 @@ export default class Routing extends React.Component {
             <main>
                 <Switch>
                     <Route exact path='/' component={Home}/>
-                    <Route exact path='/:state' component={StateNews}/>
+                    <Route exact path='/s/:state' component={StateNews}/>
+                    <Route exact path='/c/:state' component={StateNews}/>
                 </Switch>
             </main>
         );
