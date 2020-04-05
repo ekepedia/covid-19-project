@@ -37,24 +37,27 @@ const Styles = {
         width: "fit-content"
     },
     button: {
-        width: "169px",
+        minWidth: "169px",
         lineHeight: "56px",
         height: "56p6x",
-        textAlign: "center",
+        textAlign: "left",
         background: "#35998F",
         backgroundImage: "url('/img/gradient.png')",
         backgroundPosition: "left",
         animation: "backgroundmove 5s infinite",
         animationTimingFunction: "ease-in-out",
         borderRadius: "28px",
+        paddingLeft: "26px",
+        paddingRight: "69px",
         fontSize: "23px",
-        cursor: "pointer"
+        cursor: "pointer",
     },
     selectDown: {
         position: "absolute",
-        right: 18,
-        top: 21,
-        width: "18px"
+        right: 10,
+        top: 4,
+        width: "51px",
+        cursor: "pointer",
     },
     title: {
         color: "black",
@@ -394,15 +397,14 @@ class Home extends React.Component {
                 <div className={classes.header}>
                     Track <span className={classes.span}>COVID-19</span> News by
                 </div>
-                <div className={classes.selectContainer}>
-                    <select className={classes.button} value={this.state.option} onChange={(e) => {
-                        this.setState({option: e.target.value});
-                        localStorage.option = e.target.value;
-                    }
-                    }>
-                        <option value={"s"}>State</option>
-                        <option value={"c"}>Country</option>
-                    </select>
+                <div className={classes.selectContainer} onClick={() => {
+                    localStorage.option =  this.state.option === "s" ? "c" : "s";
+                    this.setState({option: this.state.option === "s" ? "c" : "s"});
+                }
+                }>
+                    <div className={classes.button}>
+                        {this.state.option === "s" ? "State" : "Country"}
+                    </div>
                     <img className={classes.selectDown} src={"/img/select-down.png"} />
                 </div>
             </div>
