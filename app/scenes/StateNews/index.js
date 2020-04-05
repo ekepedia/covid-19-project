@@ -38,7 +38,7 @@ const Styles = {
     },
     backButton: {
         height: "15px",
-        marginTop: "-1px",
+        marginTop: "-2px",
         marginRight: "10px"
     },
     header: {
@@ -155,7 +155,7 @@ class StateNews extends React.Component {
         let { classes } = this.props;
         const { state } = this.props.match.params;
 
-        const isState = window.location.pathname.indexOf("/c/") === -1;
+        const isState = window.location.pathname.indexOf("/s/") !== -1;
 
         return (<div className={classes.container}>
             <div className={classes.boxContainer}>
