@@ -29,7 +29,7 @@ const Styles = {
         letterSpacing: "1px"
     },
     span: {
-        //color: "#35998F"
+        color: "#F4AE3D"
     },
     selectContainer: {
         position: "relative",
@@ -395,7 +395,7 @@ class Home extends React.Component {
         return (<div className={classes.container}>
             <div className={classes.boxContainer}>
                 <div className={classes.header}>
-                    Track <span className={classes.span}>COVID-19</span> News by
+                    Track <br/><span className={classes.span}>COVID-19</span> News by
                 </div>
                 <div className={classes.selectContainer} onClick={() => {
                     localStorage.option =  this.state.option === "s" ? "c" : "s";
